@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 import portion
 
-from bokeh.io import output_file, show
+from bokeh.io import output_file, show, save
 from bokeh.models import MultiChoice, PanTool, BoxZoomTool, FixedTicker, Div
 from bokeh.plotting import figure
 from bokeh.layouts import gridplot, Spacer, column
@@ -26,18 +26,17 @@ class DataAvailabilityPlotter:
         self.plotter.ygrid.grid_line_color = None
         self.plotter.outline_line_color = None
 
-        self.all_options = ['SWA-PAS-MOM', 'SWA-PAS-GRND-MOM',
-                            'SWA-EAS-PAD-PSD',
-                            'MAG-RTN-NORMAL',
-                            'RPW-BIA-DENSITY',
-                            'EPD-EPT-SUN-RATES',
-                            'EPD-STEP-RATES',
-                            'EUI-FSI304-IMAGE', 'EUI-FSI174-IMAGE',
-                            'EUI-HRILYA1216-IMAGE', 'EUI-HRIEUV174-IMAGE',
-                            'SPICE-N-RAS',
-                            'SPICE-N-EXP',
-                            'SOLOHI-1FT',
-                            ][::-1]
+        self.all_options = [
+            # "EPD-EPT-ASUN-BURST-ELE-CLOSE", "EPD-EPT-ASUN-BURST-ION", "EPD-EPT-ASUN-HCAD", "EPD-EPT-ASUN-RATES", "EPD-EPT-NORTH-BURST-ELE-CLOSE", "EPD-EPT-NORTH-BURST-ION", "EPD-EPT-NORTH-HCAD", "EPD-EPT-NORTH-RATES", "EPD-EPT-SOUTH-BURST-ELE-CLOSE", "EPD-EPT-SOUTH-BURST-ION", "EPD-EPT-SOUTH-HCAD", "EPD-EPT-SOUTH-RATES", "EPD-EPT-SUN-BURST-ELE-CLOSE", "EPD-EPT-SUN-BURST-ION", "EPD-EPT-SUN-HCAD", "EPD-EPT-SUN-RATES", "EPD-HET-ASUN-BURST", "EPD-HET-ASUN-RATES", "EPD-HET-NORTH-BURST", "EPD-HET-NORTH-RATES", "EPD-HET-SOUTH-BURST", "EPD-HET-SOUTH-RATES", "EPD-HET-SUN-BURST", "EPD-HET-SUN-RATES", "EPD-SIS-A-HEHIST", "EPD-SIS-A-RATES-FAST", "EPD-SIS-A-RATES-MEDIUM", "EPD-SIS-A-RATES-SLOW", "EPD-SIS-B-HEHIST", "EPD-SIS-B-RATES-FAST", "EPD-SIS-B-RATES-MEDIUM", "EPD-SIS-B-RATES-SLOW", "EPD-STEP-BURST", "EPD-STEP-HCAD", "EPD-STEP-MAIN", "EPD-STEP-RATES",
+            "EUI-FSI174-IMAGE", "EUI-FSI304-IMAGE", "EUI-HRIEUV174-IMAGE", "EUI-HRIEUVNON-IMAGE", "EUI-HRIEUVZER-IMAGE", "EUI-HRILYA1216-IMAGE",
+            # "MAG-RTN-BURST", "MAG-RTN-LL", "MAG-RTN-LL-1-MINUTE", "MAG-RTN-NORMAL", "MAG-RTN-NORMAL-1-MINUTE", "MAG-SRF-BURST", "MAG-SRF-LL", "MAG-SRF-NORMAL", "MAG-VSO-BURST", "MAG-VSO-NORMAL", "MAG-VSO-NORMAL-1-MINUTE",
+            "METIS-UV-IMAGE", "METIS-VL-IMAGE", "METIS-VL-PB", "METIS-VL-POL-ANGLE", "METIS-VL-STOKES", "METIS-VL-TB",
+            "PHI-HRT-BAZI", "PHI-HRT-BINC", "PHI-HRT-BLOS", "PHI-HRT-BMAG", "PHI-HRT-ICNT", "PHI-HRT-STOKES", "PHI-HRT-VLOS",
+            # "RPW-HFR-SURV", "RPW-LFR-SURV-ASM", "RPW-LFR-SURV-BP1", "RPW-LFR-SURV-BP2", "RPW-LFR-SURV-CWF-B", "RPW-LFR-SURV-CWF-E", "RPW-LFR-SURV-SWF-B", "RPW-LFR-SURV-SWF-E", "RPW-TDS-SURV-HIST1D", "RPW-TDS-SURV-HIST2D", "RPW-TDS-SURV-MAMP", "RPW-TDS-SURV-RSWF-B", "RPW-TDS-SURV-RSWF-E", "RPW-TDS-SURV-STAT", "RPW-TDS-SURV-TSWF-B", "RPW-TDS-SURV-TSWF-E", "RPW-TNR-SURV",
+            "SOLOHI-1FT", "SOLOHI-1UT", "SOLOHI-1VT", "SOLOHI-2FT", "SOLOHI-2US", "SOLOHI-2UT", "SOLOHI-3FG", "SOLOHI-3FT", "SOLOHI-3UT", "SOLOHI-4FG", "SOLOHI-4UT",
+            "SPICE-N-EXP", "SPICE-N-RAS", "SPICE-N-SIT", "SPICE-W-EXP", "SPICE-W-RAS", "SPICE-W-SIT",
+            #"SWA-EAS-PAD-DEF", "SWA-EAS-PAD-DNF", "SWA-EAS-PAD-PSD", "SWA-EAS1-NM3D-DEF", "SWA-EAS1-NM3D-DNF", "SWA-EAS1-NM3D-PSD", "SWA-EAS1-SS-DEF", "SWA-EAS1-SS-DNF", "SWA-EAS1-SS-PSD", "SWA-EAS2-NM3D-DEF", "SWA-EAS2-NM3D-DNF", "SWA-EAS2-NM3D-PSD", "SWA-EAS2-SS-DEF", "SWA-EAS2-SS-DNF", "SWA-EAS2-SS-PSD", "SWA-PAS-EFLUX", "SWA-PAS-GRND-MOM", "SWA-PAS-VDF",
+        ][::-1]
 
         '''
         self.multi_choice = MultiChoice(
@@ -62,7 +61,7 @@ class DataAvailabilityPlotter:
         self.phi_plot.yaxis[0].ticker = FixedTicker(ticks=[0, 90, 180])
         self.add_trajectory()
 
-        url = '<a href="http://soar.esac.esa.int/soar/">Solar Oribter Archive</a>'
+        url = '<a href="http://soar.esac.esa.int/soar/">Solar Orbiter Archive</a>'
         self.title = Div(
             text=(f"<h1>Solar Orbiter data availability</h1> "
                   f"Last updated {datestr}, daily resolution, "
@@ -109,15 +108,18 @@ class DataAvailabilityPlotter:
                 'EPD': '#ff7f00',
                 'SPI': '#a65628',
                 'SOL': '#dd1c77',
+                'PHI': '#00cccc',
+                'MET': '#aacc00'
                 }[descriptor[:3]]
 
     @staticmethod
     def merge_intervals(intervals):
         intervals = intervals.sort_values(by='Start')
         start_dates = intervals['Start'].map(lambda t: t.date()).unique()
-        end_dates = (intervals['End'] +
-                     timedelta(days=1) -
-                     timedelta(microseconds=1)).map(lambda t: t.date()).unique()
+        end_dates = (
+            intervals['End'] +
+            (timedelta(days=1) - timedelta(microseconds=1))
+        ).map(lambda t: t.date()).unique()
         intervals = portion.empty()
         for start, end in zip(start_dates, end_dates):
             intervals = intervals | portion.closed(start, end)
@@ -125,3 +127,6 @@ class DataAvailabilityPlotter:
 
     def show(self):
         show(self.layout)
+
+    def save(self):
+        save(self.layout)

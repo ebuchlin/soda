@@ -49,7 +49,7 @@ class DataProduct:
     def save_remote_intervals(self):
         """
         Get and save the intervals of all data files available in the
-        Solar Oribter Archive for a given data descriptor.
+        Solar Orbiter Archive for a given data descriptor.
         """
         print(f'Updating intervals for {self.descriptor}...')
         base_url = ('http://soar.esac.esa.int/soar-sl-tap/tap/'
@@ -95,6 +95,5 @@ class DataProduct:
             intervals.append([time.parse_time(start).datetime,
                               time.parse_time(end).datetime])
 
-        df = pd.DataFrame(intervals)
-        df.columns = ['Start', 'End']
+        df = pd.DataFrame(intervals, columns = ['Start', 'End'])
         df.to_csv(self.latest_path, index=False)
