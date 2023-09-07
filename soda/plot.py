@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 import portion
 
-from bokeh.io import output_file, show
+from bokeh.io import output_file, show, save
 from bokeh.models import MultiChoice, PanTool, BoxZoomTool, FixedTicker, Div
 from bokeh.plotting import figure
 from bokeh.layouts import gridplot, Spacer, column
@@ -126,3 +126,6 @@ class DataAvailabilityPlotter:
 
     def show(self):
         show(self.layout)
+
+    def save(self):
+        save(self.layout)
