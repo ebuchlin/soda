@@ -43,6 +43,7 @@ class DataAvailabilityPlotter:
                                title='Earth-Orbiter angle',
                                tools=tools)
         self.phi_plot.yaxis[0].ticker = FixedTicker(ticks=[0, 90, 180])
+        self.r_plot.yaxis[0].ticker = FixedTicker(ticks=[0.25, 0.5, 0.75, 1])
         self.add_trajectory()
 
         url = '<a href="http://soar.esac.esa.int/soar/">Solar Orbiter Archive</a>'
@@ -62,14 +63,20 @@ class DataAvailabilityPlotter:
         # top, right, bottom, left
         self.layout.margin = (0, 75, 0, 75)
         # Add data
+        factors = []
         for desc in self.all_options:
-            self.add_interval_data(desc)
-
-        # self.multi_choice.js_link("value", self.plotter.y_range, "factors")
-        self.plotter.y_range.factors = self.all_options
+            is_added = self.add_interval_data(desc)
+            if is_added:
+                factors.append(desc)
+        self.plotter.y_range.factors = factors
 
     def add_interval_data(self, descriptor):
         product = DataProduct(descriptor)
+        # do not plot products with less than 1% total observation duration in 2022
+        duration = product.total_duration(pd.Timestamp("2022-01-01"), pd.Timestamp("2023-01-01"))
+        reference_duration = pd.Timedelta(days=365)
+        if duration.total_seconds() / reference_duration.total_seconds() < 0.005:
+            return False
         intervals = self.merge_intervals(product.intervals)
         for interval in intervals:
             self.plotter.hbar(y=[descriptor],
@@ -77,6 +84,7 @@ class DataAvailabilityPlotter:
                               right=interval.upper,
                               height=0.5,
                               color=self.get_color(descriptor))
+        return True
 
     def add_trajectory(self):
         dates, r, sun_earth_angle = get_traj()

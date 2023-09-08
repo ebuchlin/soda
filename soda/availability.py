@@ -75,3 +75,32 @@ class DataProduct:
 
         df = pd.DataFrame(intervals, columns = ['Start', 'End'])
         df.to_csv(self.latest_path, index=False)
+
+    def total_duration(self, begin_time, end_time):
+        """
+        Compute total observation duration in time range
+
+        Parameters
+        ----------
+        begin_time: pandas.Timestamp
+            Start of time interval
+        end_time: pandas.Timestamp
+            End of time interval
+
+        Return
+        ------
+        pandas.Timedelta
+            Total observation duration
+
+        Note: there is no check on intervals overlaps.
+        """
+        intervals = self.intervals
+        if intervals.empty:
+            return pd.Timedelta(seconds=0)
+        durations = self.intervals.apply(
+            lambda row: row["End"] - row["Start"]
+                if (row["Start"] >= begin_time) and (row["End"] <= end_time)
+                else pd.Timedelta(seconds=0),
+            axis=1
+        )
+        return durations.sum()
