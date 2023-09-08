@@ -1,13 +1,12 @@
-from datetime import datetime, date
-import pathlib
+from pathlib import Path
 import pandas as pd
 
-import requests
-from sunpy import time
+from soda.soar_query import SoarQuery
 
-_MISSION_BEGIN = time.parse_time(datetime(2020, 1, 1))
-_NOW = time.parse_time(datetime.now())
-_CACHE_DIR = (pathlib.Path(__file__) / '..' / '.data').resolve()
+
+_MISSION_BEGIN = pd.Timestamp("2020-01-01")
+_NOW = pd.Timestamp("now")
+_CACHE_DIR = (Path(__file__) / '..' / '.data').resolve()
 _CACHE_DIR.mkdir(exist_ok=True)
 
 
@@ -52,48 +51,56 @@ class DataProduct:
         Solar Orbiter Archive for a given data descriptor.
         """
         print(f'Updating intervals for {self.descriptor}...')
-        base_url = ('http://soar.esac.esa.int/soar-sl-tap/tap/'
-                    'sync?REQUEST=doQuery&')
-        begin_time = _MISSION_BEGIN.isot.replace('T', '+')
-        end_time = _NOW.isot.replace('T', '+')
-        # Need to manually set the intervals based on a query
-        request_dict = {}
-        request_dict['LANG'] = 'ADQL'
-        request_dict['FORMAT'] = 'json'
-
-        query = {}
-        query['SELECT'] = '*'
-        if self.low_latency:
-            query['FROM'] = 'v_ll_data_item'
-        else:
-            query['FROM'] = 'v_sc_data_item'
-        query['WHERE'] = (f"descriptor='{self.descriptor}'+AND+"
-                          f"begin_time<='{end_time}'+AND+"
-                          f"begin_time>='{begin_time}'")
-        request_dict['QUERY'] = '+'.join([f'{item}+{query[item]}' for
-                                          item in query])
-
-        request_str = ''
-        request_str = [f'{item}={request_dict[item]}' for item in request_dict]
-        request_str = '&'.join(request_str)
-
-        url = base_url + request_str
-        # Get request info
-        r = requests.get(url)
-        # TODO: intelligently detect and error on a bad descriptor
+        begin_time = _MISSION_BEGIN.isoformat(sep=" ")
+        end_time = _NOW.isoformat(sep=" ")
+        soar = SoarQuery()
+        result = soar.get_availability(
+            self.descriptor,
+            begin_time, end_time,
+            low_latency=self.low_latency
+        )
 
         # Do some list/dict wrangling
-        names = [m['name'] for m in r.json()['metadata']]
+        names = [m['name'] for m in result['metadata']]
         info = {name: [] for name in names}
-        for entry in r.json()['data']:
+        for entry in result['data']:
             for i, name in enumerate(names):
                 info[name].append(entry[i])
 
         # Setup intervals
         intervals = []
         for start, end in zip(info['begin_time'], info['end_time']):
-            intervals.append([time.parse_time(start).datetime,
-                              time.parse_time(end).datetime])
+            intervals.append([pd.Timestamp(start).to_pydatetime(),
+                              pd.Timestamp(end).to_pydatetime()])
 
         df = pd.DataFrame(intervals, columns = ['Start', 'End'])
         df.to_csv(self.latest_path, index=False)
+
+    def total_duration(self, begin_time, end_time):
+        """
+        Compute total observation duration in time range
+
+        Parameters
+        ----------
+        begin_time: pandas.Timestamp
+            Start of time interval
+        end_time: pandas.Timestamp
+            End of time interval
+
+        Return
+        ------
+        pandas.Timedelta
+            Total observation duration
+
+        Note: there is no check on intervals overlaps.
+        """
+        intervals = self.intervals
+        if intervals.empty:
+            return pd.Timedelta(seconds=0)
+        durations = self.intervals.apply(
+            lambda row: row["End"] - row["Start"]
+                if (row["Start"] >= begin_time) and (row["End"] <= end_time)
+                else pd.Timedelta(seconds=0),
+            axis=1
+        )
+        return durations.sum()
