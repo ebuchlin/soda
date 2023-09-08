@@ -1,10 +1,11 @@
 from datetime import datetime, timedelta
 import portion
+import pandas as pd
 
 from bokeh.io import output_file, show, save
-from bokeh.models import MultiChoice, PanTool, BoxZoomTool, FixedTicker, Div
+from bokeh.models import PanTool, BoxZoomTool, FixedTicker, Div
 from bokeh.plotting import figure
-from bokeh.layouts import gridplot, Spacer, column
+from bokeh.layouts import gridplot, column
 
 from soda.availability import DataProduct
 from soda.trajectory import get_traj
@@ -20,7 +21,7 @@ class DataAvailabilityPlotter:
                  'undo',
                  'redo',
                  'reset']
-        self.plotter = figure(sizing_mode='stretch_width', plot_height=500,
+        self.plotter = figure(sizing_mode='stretch_width', plot_height=600,
                               x_axis_type='datetime', y_range=[],
                               x_range=(datetime(2020, 2, 10), datetime.now()),
                               tools=tools)
@@ -31,12 +32,12 @@ class DataAvailabilityPlotter:
         soar = SoarQuery()
         self.all_options = soar.get_descriptors(instruments)[::-1]
 
-        self.r_plot = figure(sizing_mode='stretch_width', plot_height=150,
+        self.r_plot = figure(sizing_mode='stretch_width', plot_height=100,
                              x_axis_type='datetime', y_range=[0.25, 1.05],
                              x_range=self.plotter.x_range,
                              title='Radial distance',
                              tools=tools)
-        self.phi_plot = figure(sizing_mode='stretch_width', plot_height=150,
+        self.phi_plot = figure(sizing_mode='stretch_width', plot_height=100,
                                x_axis_type='datetime', y_range=[0, 180],
                                x_range=self.plotter.x_range,
                                title='Earth-Orbiter angle',
