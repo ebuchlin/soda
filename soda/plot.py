@@ -27,15 +27,15 @@ class DataAvailabilityPlotter:
         self.plotter.outline_line_color = None
 
         self.all_options = [
-            # "EPD-EPT-ASUN-BURST-ELE-CLOSE", "EPD-EPT-ASUN-BURST-ION", "EPD-EPT-ASUN-HCAD", "EPD-EPT-ASUN-RATES", "EPD-EPT-NORTH-BURST-ELE-CLOSE", "EPD-EPT-NORTH-BURST-ION", "EPD-EPT-NORTH-HCAD", "EPD-EPT-NORTH-RATES", "EPD-EPT-SOUTH-BURST-ELE-CLOSE", "EPD-EPT-SOUTH-BURST-ION", "EPD-EPT-SOUTH-HCAD", "EPD-EPT-SOUTH-RATES", "EPD-EPT-SUN-BURST-ELE-CLOSE", "EPD-EPT-SUN-BURST-ION", "EPD-EPT-SUN-HCAD", "EPD-EPT-SUN-RATES", "EPD-HET-ASUN-BURST", "EPD-HET-ASUN-RATES", "EPD-HET-NORTH-BURST", "EPD-HET-NORTH-RATES", "EPD-HET-SOUTH-BURST", "EPD-HET-SOUTH-RATES", "EPD-HET-SUN-BURST", "EPD-HET-SUN-RATES", "EPD-SIS-A-HEHIST", "EPD-SIS-A-RATES-FAST", "EPD-SIS-A-RATES-MEDIUM", "EPD-SIS-A-RATES-SLOW", "EPD-SIS-B-HEHIST", "EPD-SIS-B-RATES-FAST", "EPD-SIS-B-RATES-MEDIUM", "EPD-SIS-B-RATES-SLOW", "EPD-STEP-BURST", "EPD-STEP-HCAD", "EPD-STEP-MAIN", "EPD-STEP-RATES",
-            "EUI-FSI174-IMAGE", "EUI-FSI304-IMAGE", "EUI-HRIEUV174-IMAGE", "EUI-HRIEUVNON-IMAGE", "EUI-HRIEUVZER-IMAGE", "EUI-HRILYA1216-IMAGE",
-            # "MAG-RTN-BURST", "MAG-RTN-LL", "MAG-RTN-LL-1-MINUTE", "MAG-RTN-NORMAL", "MAG-RTN-NORMAL-1-MINUTE", "MAG-SRF-BURST", "MAG-SRF-LL", "MAG-SRF-NORMAL", "MAG-VSO-BURST", "MAG-VSO-NORMAL", "MAG-VSO-NORMAL-1-MINUTE",
-            "METIS-UV-IMAGE", "METIS-VL-IMAGE", "METIS-VL-PB", "METIS-VL-POL-ANGLE", "METIS-VL-STOKES", "METIS-VL-TB",
-            "PHI-HRT-BAZI", "PHI-HRT-BINC", "PHI-HRT-BLOS", "PHI-HRT-BMAG", "PHI-HRT-ICNT", "PHI-HRT-STOKES", "PHI-HRT-VLOS",
-            # "RPW-HFR-SURV", "RPW-LFR-SURV-ASM", "RPW-LFR-SURV-BP1", "RPW-LFR-SURV-BP2", "RPW-LFR-SURV-CWF-B", "RPW-LFR-SURV-CWF-E", "RPW-LFR-SURV-SWF-B", "RPW-LFR-SURV-SWF-E", "RPW-TDS-SURV-HIST1D", "RPW-TDS-SURV-HIST2D", "RPW-TDS-SURV-MAMP", "RPW-TDS-SURV-RSWF-B", "RPW-TDS-SURV-RSWF-E", "RPW-TDS-SURV-STAT", "RPW-TDS-SURV-TSWF-B", "RPW-TDS-SURV-TSWF-E", "RPW-TNR-SURV",
-            "SOLOHI-1FT", "SOLOHI-1UT", "SOLOHI-1VT", "SOLOHI-2FT", "SOLOHI-2US", "SOLOHI-2UT", "SOLOHI-3FG", "SOLOHI-3FT", "SOLOHI-3UT", "SOLOHI-4FG", "SOLOHI-4UT",
-            "SPICE-N-EXP", "SPICE-N-RAS", "SPICE-N-SIT", "SPICE-W-EXP", "SPICE-W-RAS", "SPICE-W-SIT",
-            #"SWA-EAS-PAD-DEF", "SWA-EAS-PAD-DNF", "SWA-EAS-PAD-PSD", "SWA-EAS1-NM3D-DEF", "SWA-EAS1-NM3D-DNF", "SWA-EAS1-NM3D-PSD", "SWA-EAS1-SS-DEF", "SWA-EAS1-SS-DNF", "SWA-EAS1-SS-PSD", "SWA-EAS2-NM3D-DEF", "SWA-EAS2-NM3D-DNF", "SWA-EAS2-NM3D-PSD", "SWA-EAS2-SS-DEF", "SWA-EAS2-SS-DNF", "SWA-EAS2-SS-PSD", "SWA-PAS-EFLUX", "SWA-PAS-GRND-MOM", "SWA-PAS-VDF",
+            # "epd-ept-asun-burst-ele-close", "epd-ept-asun-burst-ion", "epd-ept-asun-hcad", "epd-ept-asun-rates", "epd-ept-north-burst-ele-close", "epd-ept-north-burst-ion", "epd-ept-north-hcad", "epd-ept-north-rates", "epd-ept-south-burst-ele-close", "epd-ept-south-burst-ion", "epd-ept-south-hcad", "epd-ept-south-rates", "epd-ept-sun-burst-ele-close", "epd-ept-sun-burst-ion", "epd-ept-sun-hcad", "epd-ept-sun-rates", "epd-het-asun-burst", "epd-het-asun-rates", "epd-het-north-burst", "epd-het-north-rates", "epd-het-south-burst", "epd-het-south-rates", "epd-het-sun-burst", "epd-het-sun-rates", "epd-sis-a-hehist", "epd-sis-a-rates-fast", "epd-sis-a-rates-medium", "epd-sis-a-rates-slow", "epd-sis-b-hehist", "epd-sis-b-rates-fast", "epd-sis-b-rates-medium", "epd-sis-b-rates-slow", "epd-step-burst", "epd-step-hcad", "epd-step-main", "epd-step-rates",
+            "eui-fsi174-image", "eui-fsi304-image", "eui-hrieuv174-image", "eui-hrieuvnon-image", "eui-hrieuvzer-image", "eui-hrilya1216-image",
+            # "mag-rtn-burst", "mag-rtn-ll", "mag-rtn-ll-1-minute", "mag-rtn-normal", "mag-rtn-normal-1-minute", "mag-srf-burst", "mag-srf-ll", "mag-srf-normal", "mag-vso-burst", "mag-vso-normal", "mag-vso-normal-1-minute",
+            "metis-uv-image", "metis-vl-image", "metis-vl-pb", "metis-vl-pol-angle", "metis-vl-stokes", "metis-vl-tb",
+            "phi-hrt-bazi", "phi-hrt-binc", "phi-hrt-blos", "phi-hrt-bmag", "phi-hrt-icnt", "phi-hrt-stokes", "phi-hrt-vlos",
+            # "rpw-hfr-surv", "rpw-lfr-surv-asm", "rpw-lfr-surv-bp1", "rpw-lfr-surv-bp2", "rpw-lfr-surv-cwf-b", "rpw-lfr-surv-cwf-e", "rpw-lfr-surv-swf-b", "rpw-lfr-surv-swf-e", "rpw-tds-surv-hist1d", "rpw-tds-surv-hist2d", "rpw-tds-surv-mamp", "rpw-tds-surv-rswf-b", "rpw-tds-surv-rswf-e", "rpw-tds-surv-stat", "rpw-tds-surv-tswf-b", "rpw-tds-surv-tswf-e", "rpw-tnr-surv",
+            "solohi-1ft", "solohi-1ut", "solohi-1vt", "solohi-2ft", "solohi-2us", "solohi-2ut", "solohi-3fg", "solohi-3ft", "solohi-3ut", "solohi-4fg", "solohi-4ut",
+            "spice-n-exp", "spice-n-ras", "spice-n-sit", "spice-w-exp", "spice-w-ras", "spice-w-sit",
+            #"swa-eas-pad-def", "swa-eas-pad-dnf", "swa-eas-pad-psd", "swa-eas1-nm3d-def", "swa-eas1-nm3d-dnf", "swa-eas1-nm3d-psd", "swa-eas1-ss-def", "swa-eas1-ss-dnf", "swa-eas1-ss-psd", "swa-eas2-nm3d-def", "swa-eas2-nm3d-dnf", "swa-eas2-nm3d-psd", "swa-eas2-ss-def", "swa-eas2-ss-dnf", "swa-eas2-ss-psd", "swa-pas-eflux", "swa-pas-grnd-mom", "swa-pas-vdf",
         ][::-1]
 
         '''
@@ -101,6 +101,7 @@ class DataAvailabilityPlotter:
 
     @staticmethod
     def get_color(descriptor):
+        instrument = descriptor[:3].upper()
         return {'EUI': '#e41a1c',
                 'MAG': '#377eb8',
                 'SWA': '#4daf4a',
@@ -110,7 +111,7 @@ class DataAvailabilityPlotter:
                 'SOL': '#dd1c77',
                 'PHI': '#00cccc',
                 'MET': '#aacc00'
-                }[descriptor[:3]]
+                }[instrument]
 
     @staticmethod
     def merge_intervals(intervals):
