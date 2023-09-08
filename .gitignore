@@ -3,5 +3,5 @@ soda/.data/*
 *.DS_Store
 index.html
 venv
-put-ovh.sh
+*.sh
 *~
