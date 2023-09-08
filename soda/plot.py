@@ -31,14 +31,6 @@ class DataAvailabilityPlotter:
         soar = SoarQuery()
         self.all_options = soar.get_descriptors(instruments)[::-1]
 
-        self.multi_choice = MultiChoice(
-            value=self.all_options,
-            options=self.all_options,
-            width_policy='fit',
-            width=200,
-            sizing_mode='stretch_height',
-            title='Select data products')
-
         self.r_plot = figure(sizing_mode='stretch_width', plot_height=150,
                              x_axis_type='datetime', y_range=[0.25, 1.05],
                              x_range=self.plotter.x_range,
