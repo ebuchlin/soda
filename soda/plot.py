@@ -75,7 +75,7 @@ class DataAvailabilityPlotter:
         # do not plot products with less than 1% total observation duration in 2022
         duration = product.total_duration(pd.Timestamp("2022-01-01"), pd.Timestamp("2023-01-01"))
         reference_duration = pd.Timedelta(days=365)
-        if duration.total_seconds() / reference_duration.total_seconds() < 0.005:
+        if duration.total_seconds() / reference_duration.total_seconds() < 0.001:
             return False
         intervals = self.merge_intervals(product.intervals)
         for interval in intervals:
