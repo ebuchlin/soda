@@ -3,3 +3,5 @@ heliopy[data,spice]==0.15.4
 pandas==1.5.3
 portion==2.3.0
 requests==2.28.2
+numpy==1.26.4
+sunpy[visulaization]==6.0.4
