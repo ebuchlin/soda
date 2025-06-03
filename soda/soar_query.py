@@ -27,7 +27,7 @@ class SoarQuery:
             'FORMAT': 'json',
             'QUERY': adql_query
         }
-        r = requests.get(f'{self.tap_end_point}/sync', params=payload)
+        r = requests.get(f'{self.tap_end_point}sync', params=payload)
         return r.json()
 
     def get_descriptors(self, instruments):
